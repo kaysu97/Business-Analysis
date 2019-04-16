@@ -1,4 +1,4 @@
-#²Ä¤@ÃD
+#How would you do to know the data? 
 laptop.df <- read.csv('C:\\Users\\USER\\Desktop\\kay\\BusinessAnalysis\\LaptopSalesJanuary2008Sub.csv')
 str(laptop.df)
 str(laptop.df)
@@ -9,22 +9,9 @@ install.packages("psych")
 library(psych)
 describe(laptop.df[,c(2,5:9,11,13)])
 
-#²Ä¤GÃD:§Ú­Ì©w¸qªºactually selling¬O¥­§¡¤U¨Ó¤@¯ë¤H¤j·§¦b¬Y³W®æ¤Uªº¬Y­Ó»ù®æ
-# table(laptop.df$Integrated.Wireless.)
-#   #Yes>No,¦ı¬O¥u¦h¤@ÂI
-# table(laptop.df$Bundled.Applications.)
-#   #Yes>No,¦ı¬O¥u¦h¤@ÂI
-# Condi = which(laptop.df$Integrated.Wireless.=="Yes" & laptop.df$Bundled.Applications.=="Yes")
-# ConPrice=laptop.df$Retail.Price[Condi]
-# mean(ConPrice)
-# mean(laptop.df$Configuration[Condi])
-# mean(laptop.df$Screen.Size..Inches.[Condi])
-# mean(laptop.df$Battery.Life..Hours.[Condi])
-# mean(laptop.df$RAM..GB.[Condi])
-# mean(laptop.df$Processor.Speeds..GHz.[Condi])
-# mean(laptop.df$HD.Size..GB.[Condi])
-# mean(laptop.df$CustomerStoreDistance[Condi])
-#¥­§¡Â÷©±®a³o­Ó¶ZÂ÷ªºÅU«È·|®ø¶O¦b¤W­z¦UºØ¥­§¡³W®æ±ø¥ó¤Uªº¹q¸£»ù®æ
+#At what price are the laptops actually selling? Hint: define â€œactually sellingâ€
+#æˆ‘å€‘å®šç¾©çš„actually sellingæ˜¯å¹³å‡ä¸‹ä¾†ä¸€èˆ¬äººå¤§æ¦‚åœ¨æŸè¦æ ¼ä¸‹çš„æŸå€‹åƒ¹æ ¼
+#å¹³å‡é›¢åº—å®¶é€™å€‹è·é›¢çš„é¡§å®¢æœƒæ¶ˆè²»åœ¨ä¸Šè¿°å„ç¨®å¹³å‡è¦æ ¼æ¢ä»¶ä¸‹çš„é›»è…¦åƒ¹æ ¼
 ConQuan = table(laptop.df$Configuration)
 str(ConQuan)
 as.numeric(ConQuan)
@@ -35,44 +22,32 @@ maxConfig<-CountCon$Var1[maxConfigQuan]
 maxConfigPrice<-which(laptop.df$Configuration==maxConfig)
 table(laptop.df$Retail.Price[maxConfigPrice])
 
-
-
-
-#²Ä¤TÃD
+#Create a bar chart, showing the average retail price by store. Which store has the highest
+average? Which has the lowest?
 price.mean <- aggregate(Retail.Price~Store.Postcode,data=laptop.df, mean)
 library(lattice)
 barchart(Retail.Price~Store.Postcode, data=price.mean,ylab='Retail Price Mean', xlab='Store PostCode',col="lightblue")
 
-#²Ä¥|ÃD
+# Are average prices consistent across retail outlets in general?
 sd(price.mean$Retail.Price)
 IQR(price.mean$Retail.Price)
 
 
-#²Ä¤­ÃD
-boxplot(Retail.Price~Store.Postcode, data=laptop.df, yaxt='n', ylab='»ù®æ ($k)')
+#To better compare retail prices across stores, create boxplots of retail price by store. Now compare the prices in the two stores from (3). Does there seem to be a difference between their price distributions?
+boxplot(Retail.Price~Store.Postcode, data=laptop.df, yaxt='n', ylab='åƒ¹æ ¼ ($k)')
 a<-which(laptop.df$Store.Postcode=='W4 3PH'| laptop.df$Store.Postcode=='N17 6QA') 
-#¿ï¥X»ù®æ¥­§¡³Ì¤j©M³Ì¤pªº¨â®a©±¦ì¸m
-b<-laptop.df$Retail.Price[a]#§ä¥X³Ì¤j³Ì¤pªº¨â©±»ù®æ¤À¥¬
+#é¸å‡ºåƒ¹æ ¼å¹³å‡æœ€å¤§å’Œæœ€å°çš„å…©å®¶åº—ä½ç½®
+b<-laptop.df$Retail.Price[a]#æ‰¾å‡ºæœ€å¤§æœ€å°çš„å…©åº—åƒ¹æ ¼åˆ†å¸ƒ
 c<-laptop.df$Store.Postcode[a]
-two <- factor(c)#¥´Â_µ²ºc¡A¤£­n¥X²{³Ñ¤U14­Ó¨S¦³¥Î¨ìªº©±®a
-minmax<-data.frame( "Store"=two, "Price"=b)#¥u¤ñ¸û³Ì¤j©M³Ì¤p¨â®a©±
-boxplot(Price~Store, data=minmax, col=c(5,6),xlab='Store Postcode', ylab='»ù®æ ($k)')#³Ì¤j©M³Ì¤pªºbox plot
-#Q1min<- quantile(minPrice,1/4) 
-#Q2min <- quantile(minPrice, 2 / 4) 
-# Q3min <- quantile(minPrice, 3 / 4)
-# Q1max<- quantile(maxPrice,1/4) 
-# Q2max <- quantile(maxPrice, 2 / 4) 
-# Q3max <- quantile(maxPrice, 3 / 4)
-# IQR(minPrice)
-# IQR(maxPrice)
-# range(maxPrice)[2] - range(maxPrice)[1]
-# range(minPrice)[2] - range(minPrice)[1]
+two <- factor(c)#æ‰“æ–·çµæ§‹ï¼Œä¸è¦å‡ºç¾å‰©ä¸‹14å€‹æ²’æœ‰ç”¨åˆ°çš„åº—å®¶
+minmax<-data.frame( "Store"=two, "Price"=b)#åªæ¯”è¼ƒæœ€å¤§å’Œæœ€å°å…©å®¶åº—
+boxplot(Price~Store, data=minmax, col=c(5,6),xlab='Store Postcode', ylab='åƒ¹æ ¼ ($k)')#æœ€å¤§å’Œæœ€å°çš„box plot
 
-#²Ä¤»ÃD
+#Which stores are selling the most in terms of quantities? Provide a visual presentation, and a description about which store it is. Do store quantities vary in general?
 plot(sort(table(laptop.df$Store.Postcode),decreasing = FALSE))
 table(laptop.df$Store.Postcode)
 
-#²Ä¤CÃD
+#In general, are storesâ€™ sales quantities depend on computer configurations?
 ConQuan = table(laptop.df$Configuration)
 str(ConQuan)
 as.numeric(ConQuan)
@@ -81,28 +56,11 @@ Config<-as.numeric(CountCon$Var1)
 cor(x=Config,y=CountCon$Freq)
 aggregate(Retail.Price~Configuration, data=laptop.df, mean)
 
-#²Ä¤KÃD
+#What are revenues of stores? 
 sum(laptop.df$Retail.Price)
-Storesum = aggregate(laptop.df$Retail.Price,
-                        by=list(Country=laptop.df$Store.Postcode), sum)
+Storesum = aggregate(laptop.df$Retail.Price,by=list(Country=laptop.df$Store.Postcode), sum)
 library(lattice)
 barchart(x~Country, data=Storesum, col="lightblue")
-
-
 seg.aov.own <- aov(Retail.Price ~ Store.Postcode, data=laptop.df) 
-
 anova(seg.aov.own)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
